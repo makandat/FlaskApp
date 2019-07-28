@@ -1,0 +1,81 @@
+<!doctype html>
+<!-- chart_function.html -->
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Chart.js function</title>
+  <link rel="stylesheet" href="/static/css/default.css" />
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+  <style>
+    form {
+      margin-left:20%;
+    }
+  </style>
+</head>
+
+<body>
+ <h1>Chart.js 関数のグラフ</h1>
+ <div class="menubar"><a href="/">HOME</a></div>
+ <br />
+ <form id="form1">
+  <div>関数の種類 <ul style="list-style-type:none">
+    <li><input type="radio" name="kind" value="parabola" checked="checked" /> 方物線</li>
+    <li><input type="radio" name="kind" value="sqrt" /> 平方根</li>
+    <li><input type="radio" name="kind" value="cos" /> cosine関数</li>
+    <li><input type="radio" name="kind" value="sin" /> sine関数</li>
+    <li><input type="radio" name="kind" value="exp" /> 指数関数</li>
+    <li><input type="radio" name="kind" value="log" /> 対数関数</li>
+  </ul>
+  <div><label>X 軸のデータ <input type="text" id="xdata" name="xdata" placeholder="0,1,2,3,4" size="40" /></div>
+  <div><input type="button" id="draw_button" name="draw_button" value="描画" /></div>
+  <p class="message" id="message"></p>
+ </form>
+ <br />
+ <div style="margin-left:5%;width:800px;">
+   <canvas id="myChart"></canvas>
+ </div>
+
+<script>
+const URL = "http://localhost:5000/api/numpy/function"
+const ctx = "myChart";
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [0,1,2,3,4,5],
+      datasets: [{
+         label: "Sample",
+         data: [0,5,3,8,1,9],
+         backgroundColor: "transparent",
+         borderColor: "dimgray",
+         borderWidth: 3
+        }]
+    },
+    options: null
+});
+</script>
+
+<script>
+$(function() {
+  $("#draw_button").click(()=>{
+    if ($("#xdata").val() == "") {
+      $("#message").text("エラー: X軸のデータが空欄です。(プレースホルダの代わりにデータを入力してください。)");
+      return;
+    }
+    else {
+      $("#message").text("");
+    }
+    form_data = $('#form1').serializeArray();
+    $.getJSON(URL, form_data, (ydata) => {
+      let xdata = JSON.parse("[" + $("#xdata").val() + "]");
+      myChart.data.labels = xdata.concat();
+      myChart.data.datasets[0].data = ydata.concat();
+      myChart.data.datasets[0].label = $("input[name='kind']:checked").val();
+      myChart.update();
+      $("#message").text("表示されました。");
+    });
+  });
+});
+</script>
+</body>
+</html>

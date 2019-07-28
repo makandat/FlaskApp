@@ -1,0 +1,62 @@
+<!doctype html>
+<!-- api_bindata_extract.html -->
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>api_bindata_extract</title>
+  <link rel="stylesheet" href="./css/default.css" />
+  <link rel="shortcut icon" href="./favicon.ico">
+  <script src="./js/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <style>
+  .article {
+      margin-left:20%;
+      margin-top:30px;
+  }
+  .form_row {
+      margin-top:16px;
+      margin-bottom:16px;
+  }
+  </style>
+</head>
+
+<body>
+  <h1>BINDATA テーブルの画像を読み出して表示</h1>
+  <div class="menubar"><a href="/">HOME</a></div>
+  <div class="article" id="app">
+    <div><label>EXTRACT id <input type="text" size="5" v-model="extract_id" /></label></div>
+    <div style="margin-left:10%"><input type="button" value="表示" v-on:click="show_click" /></div>
+    <br />
+    <div style="text-align:center;" v-if="extract_id > 0"><img v-bind:src="extract_bindata" /></div>
+    <p class="message" v-text="message"></p>
+  </div>
+  
+  <script>
+    const URL = "http://localhost:5000/api/bindata/extract/";
+    var app = new Vue({
+      el: "#app",
+      data: {
+        extract_id: 0,
+        message: "",
+        extract_bindata: null
+      },
+      methods: {
+        show_click: function() {
+          this.extract_bindata = "/api/bindata/extract/" + this.extract_id;
+        }
+      },
+      watch: {
+        extract_id: function(newVal, oldVal) {
+          if (newVal == "" || newVal == 0) {
+            this.message = "id が正しくありません."
+          }
+          else {
+            this.message = "";
+          }
+        }
+      }
+     });
+  </script>
+  
+</body>
+</html>

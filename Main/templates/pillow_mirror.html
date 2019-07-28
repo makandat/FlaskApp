@@ -1,0 +1,27 @@
+<!doctype html>
+<!-- pillow_mirror.html -->
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>画像処理(Mirror)</title>
+  <link rel="stylesheet" href="/static/css/default.css" />
+</head>
+
+<body>
+  <h1>画像処理(Mirror)</h1>
+  <div class="menubar"><a href="/">HOME</a></div>
+  <br />
+  <form method="POST" style="margin-left:20%;">
+    <div class="form_row"><label>画像ファイルのパス名 <input type="text" name="path" size="50" value="{{ path }}" /></label></div>
+    <div class="form_row"><label><input type="radio" name="mode" value="mirror" checked /> 鏡像</label></div>
+    <div class="form_row"><label><input type="radio" name="mode" value="flip" /> 上下反転</label></div>
+    <div class="form_row"><input type="submit" value="送信" style="margin-left:100px;" /></div>
+  </form>
+  <br />
+  <p class="message">{{ result }}</p>
+  <br />
+  <div style="text-align:center;"><img src="/api/send_file?path={{ result }}" /></div>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+</body>
+</html>

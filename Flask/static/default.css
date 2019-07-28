@@ -1,0 +1,221 @@
+/* style570.css */
+
+/* ホットスポット関連 */
+a:link, a:visited {
+  color: royalblue;
+  text-decoration: none;
+}
+
+
+/* HTML 本体関連 */
+body {
+  background-color: white;
+  color: dimgray;
+}
+
+header {
+  border:solid thin silver;
+  background-color:whitesmoke;
+  border-radius:6px 6px;
+  margin-top:20px;
+  margin-left: 5%;
+  margin-right: 5%;"
+}
+
+article {
+  margin-left: 8%;
+  margin-right: 8%;
+  margin-top:70px;
+}
+
+footer {
+  margin-top:32px;
+  margin-bottom:48px;
+  margin-left: 5%;
+  margin-right: 5%;"
+}
+
+
+/* ヘッダー関連 */
+h1 {
+  color: mediumvioletred;
+  text-align: center;
+  font-size: 3.0em;
+}
+
+.h1border {
+  margin-left:5%;
+  margin-right:5%;
+  border: solid thin silver;
+  border-radius: 8px;
+}
+
+h2 {
+  color: steelblue;
+  margin-left: 10px;
+  padding-left:2.5%;
+  margin-top:25px;
+  margin-bottom:26px;
+  /* border-bottom: solid thin darkorchid; */
+}
+h3 {
+  color: palevioletred;
+  margin-left: 15px;
+  margin-top: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 3px;
+  border-left: solid 16px tomato;
+  padding-left:10px;
+}
+
+h4 {
+  color: crimson;
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 8px;
+  padding-bottom: 2px;
+  text-decoration: underline;
+}
+
+h5 {
+  color: darkred;
+  margin-left: 20px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  padding-bottom: 2px;
+}
+
+/*  テーブル関連 */
+table, th, td {
+  border: solid thin gray;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+th {
+  background-color: #f0f0f0;
+  padding: 5px;
+  background-color: papayawhip;
+}
+
+td {
+  padding: 4px;
+  font-size: smaller;
+  background-color: white;
+  vertical-align:top;
+}
+
+
+/* 段落関連 */
+p {
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+blockquote {
+  color: maroon;
+  padding:6px;
+}
+
+/* ソース表示 */
+pre.sample {
+ border: solid thin gray;
+ box-shadow 4px 4px 8px gray;
+ background-color:whitesmoke;
+ padding-top:6px;
+ padding-bottom:6px;
+ padding-left:10px;
+ padding-right:10px;
+ font-size:11pt;
+}
+
+pre.src {
+	  border: dotted thin darkred;
+	  padding: 5px;
+	  border-radius: 6px 6px;
+	  font-size: 10pt;
+	  background-color: white;
+  }
+
+/* メニューバー、リスト関連 */
+  .menubar {
+	  text-align:center;
+	  margin-bottom:16px;
+    border: dotted thin silver;
+    padding:3px;
+    background-color:paleturquoise;
+  }
+  .menulist {
+       margin-left:10%;
+       margin-right:10%;
+       list-style-type: none;
+  }
+  .menuitem {
+	  padding: 8px;
+	  margin-bottom :6px;
+	  font-size: 1.2em;
+  }
+
+  .menuitem2 {
+	  padding: 8px;
+	  margin-bottom :6px;
+	  font-size: 1.4em;
+	  border: solid thin silver;
+	  border-radius: 6px;
+  }
+
+  .menu {
+    padding:5px;
+    border: solid thin powderblue;
+    background-color: lightcyan;
+  }
+
+/* フォームとコントロール関連 */
+input[type="button"], button[type="button"] {
+  border-radius: 5px;
+  height: 32px;
+  background-color: yellow;
+}
+
+input[type="submit"], button[type="submit"] {
+  border-radius: 5px;
+  height: 32px;
+  background-color: lime;
+}
+
+input[type="text"] {
+  border-radius: 5px;
+  height: 26px;
+}
+
+textarea {
+  border-radius: 5px;
+}
+
+
+.form_row {
+  margin-bottom:5px;
+}
+
+
+
+
+
+
+/* その他 */
+blockquote {
+  color:indianred;
+}
+
+span {
+  color: brown;
+}
+
+.message {
+  text-align: center;
+  font-size: 14pt;
+  color: magenta;
+  padding: 5px;
+}
+

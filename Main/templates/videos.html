@@ -1,0 +1,137 @@
+<!doctype html>
+<!-- api_videos.html -->
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Videos</title>
+  <link rel="stylesheet" href="static/css/default.css" />
+  <script src="static/js/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <style>
+  .article {
+      margin-left:5%;
+      margin-top:30px;
+  }
+  .form_row {
+      margin-top:16px;
+      margin-bottom:16px;
+  }
+  </style>
+</head>
+
+<body>
+  <h1>Videos テーブルの表示</h1>
+  <div class="menubar"><a href="/">HOME</a></div>
+  <div class="article" id="app">
+    <div class="form_row" v-if="ready"><a href="#" v-on:click="first_page"><img src="static/img/first.svg" /> 先頭ページ</a>&nbsp;/&nbsp;
+      <a href="#" v-on:click="previous_page"><img src="static/img/prev.svg" /> 前ページ</a>&nbsp;/&nbsp;
+      <a href="#" v-on:click="next_page">次ページ <img src="static/img/next.svg" /></a>&nbsp;/&nbsp;
+      <a href="#" v-on:click="last_page">最終ページ <img src="static/img/last.svg" /></a>&nbsp;/&nbsp;
+      ページジャンプ <input type="text" size="5" v-model="jump" />&nbsp;<input type="button" v-on:click="jump_click" value="セット" />
+    </div>
+    <br />
+    <p class="message" v-text="message"></p>
+    <br />
+    <div v-html="html_table"></div>
+  </div>
+  <script>
+    var URL = "http://localhost:5000/api/videos";
+    var PAGELEN = 100;
+    var app = new Vue({
+      el: "#app",
+      data: {
+        page: 0,
+        jump: 1,
+        message: "",
+        html_table: "",
+        ready: false,
+        data: []
+      },
+      methods: {
+        window:onload = function() {
+          $.getJSON(URL, function(data) {
+            // 2次元配列をディープコピーする。
+            for (let i = 0; i < data.length; i++) {
+              var row = new Array();
+              for (let j = 0; j < 11; j++) {
+                row.push(data[i][j]);
+              }
+              app.data.push(row);
+            }
+            app.render_html_table();
+            app.ready = true;
+          });
+        },
+        first_page: function() {
+          this.page = 0;
+          this.render_html_table();
+          this.message = "先頭ページです。";
+        },
+        previous_page: function() {
+          if (this.page >= 1) {
+            this.page--;
+            let n = this.page + 1;
+            this.message = n + "ページ"
+            this.render_html_table();
+          }
+          else {
+            this.message = "先頭ページです。";
+          }
+        },
+        next_page: function() {
+          let nlast = Math.floor(this.data.length / PAGELEN);
+          if (this.page < nlast) {
+            this.page++;
+            this.render_html_table();
+            let n = this.page + 1;
+            this.message = n + "ページ"
+          }
+          else {
+            this.message = "最終(" + (nlast+1) +")ページです。";
+          }
+        },
+        last_page: function() {
+          this.page = Math.floor(this.data.length / PAGELEN);
+          this.render_html_table();
+          this.message = "最終(" + (this.page+1) + ")ページです。";
+        },
+        jump_click: function() {
+          let jump0 = this.jump - 1;
+          if (jump0 < 0 || jump0 > Math.floor(this.data.length / PAGELEN)) {
+            this.message = "不正なページ番号です。";
+          }
+          else {
+            this.page = jump0;
+            let n = this.page + 1;
+            this.message = n + "ページ"
+            this.render_html_table();
+          }
+        },
+        render_html_table: function() {
+          let start = this.page * PAGELEN;
+          html = "<table>\n";
+          html += "<tr><th>id</th><th>タイトル</th><th>パス</th><th>作者</th><th>シリーズ</th><th>マーク</th><th>情報</th><th>FAV</th><th>COUNT</th><th>BINDATA</th><th>ALBUM</th></tr>\n";
+          for (let i = start; i < start + PAGELEN; i++) {
+            if (i >= this.data.length) {
+              break;
+            }
+            row = this.data[i];
+            html += "<tr>";
+            for (let j = 0; j < row.length; j++) {
+              html += "<td>" + row[j] + "</td>";
+            }
+            html += "</tr>\n";
+          }
+          html += "</table>\n";
+          this.html_table = html;
+          return;
+        }
+      }
+    });
+  </script>
+  <p>&nbsp;</p>
+  <p style="text-align:center;"><a href="#top">TOP</a></p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+</body>
+</html>

@@ -1,0 +1,31 @@
+1,基本
+/img,画像フォルダ (static/img) の内容
+/css,スタイルシート (static/css/default.css) の内容
+2,API
+./static/api_echo_form.html,パラメータをそのまま返す。
+./static/api_vue_js.html,Vue.js を使って表示する。
+./static/api_pictures_view.html,VW_MANGA などの一覧を表示する。
+./static/api_quick_age.html,年齢と誕生年の取得
+/videos,Videos テーブルの表示
+/videos/modify/substr,Videos テーブルのタイトル修正(文字列指定)
+/videos/modify/id,Videos テーブルのタイトル修正(id指定)
+./static/api_bindata_extract.html,BINDATA テーブルの画像を読み出して表示
+./static/api_image_resize.html,指定フォルダの画像ファイルをサイズ変更する
+./static/api_bindata_insert.html,指定フォルダの画像ファイルをBINDATAテーブルに挿入
+3,NumPy
+/numpy/array,配列の基本
+/numpy/array/operation,配列の計算
+/numpy/array/simultaneous,連立一次方程式
+/numpy/array/determinant,行列式
+/numpy/array/inverse,逆行列
+4,Pillow
+/pillow/info,画像情報
+/pillow/resize,画像処理(Resize)
+/pillow/rotate,画像処理(Rotate)
+/pillow/convert,画像処理(Convert)
+/pillow/mirror,画像処理(Mirror)
+/pillow/crop,画像処理(Crop)
+5,Chart.js
+/chart/basic/bar,Chart.js の基本 (棒グラフ)
+/chart/basic/line,Chart.js の基本 (折れ線グラフ)
+/chart/function,関数のグラフ

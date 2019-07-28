@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+ <meta charset="utf-8" />
+ <title>Options</title>
+ <link rel="stylesheet" href="/static/css/default.css" />
+ <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+ <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+ <style>
+  
+ </style>
+</head>
+
+<body>
+ <h1><img src="static/img/python.png"> Filer by flask オプション</h1>
+ <div class="menubar"><a href="javascript:window.close();">閉じる</a></div>
+ <br />
+ <div id="app" style="margin-left:30%;">
+  <h3>表示順</h3>
+   <ul style="list-style-type:none;">
+    <li><label><input type="radio" name="orderby" v-model="orderby" value="name" checked /> 名前</label></li>
+    <li><label><input type="radio" name="orderby" v-model="orderby" value="date" /> 日付時刻</label></li>
+    <li><label><input type="radio" name="orderby" v-model="orderby" value="size" /> サイズ</label></li>
+    <li><label><input type="radio" name="orderby" v-model="orderby" value="rname" /> 名前 (降順)</label></li>
+    <li><label><input type="radio" name="orderby" v-model="orderby" value="rdate" /> 日付時刻 (降順)</label></li>
+    <li><label><input type="radio" name="orderby" v-model="orderby" value="rsize" /> サイズ (降順)</label></li>
+   </ul>
+  <br />
+  <h3>隠しファイル</h3>
+   <label><input type="checkbox" v-model="hiddenfile" value="1" /> 隠しファイルを表示する。</label>
+   <br /><br />
+  <h3>テキスト表示するファイル拡張子</h3>
+   <label>拡張子一覧(カンマ区切り)<br /><input type="text" size="60" v-model="textview" /></label>
+  <p>&nbsp;</p>
+  <input type="button" style="margin-left:10%;width:180px;" value="設定する" v-on:click="set_click" />
+ </div>
+
+ <script>
+ var app = new Vue({
+   el: "#app",
+   window:onload = ()=>{
+     app.orderby = localStorage.getItem("orderby") ? localStorage.getItem("orderby") : "name";
+     app.hiddenfile = localStorage.getItem("hiddenfile") == 1 ? true : false;
+     app.textview = localStorage.getItem("textview") ? localStorage.getItem("textview") : "txt,ini,conf,html,css,xml,csv,tsv,pl,py,rb,js,c,cpp,h,hpp,java";
+   },
+   data: {
+     orderby: "name",
+     hiddenfile: true,
+     textview: ""
+   },
+   methods: {
+     set_click: ()=>{
+       localStorage.setItem("orderby", app.orderby);
+       localStorage.setItem("hiddenfile", app.hiddenfile ? 1 : 0);
+       localStorage.setItem("textview", app.textview);
+       alert("設定を保存しました。");
+     }
+   }   
+ });
+ </script>
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+</body>
+</html>

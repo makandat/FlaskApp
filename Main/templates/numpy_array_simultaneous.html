@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+ <meta charset="utf-8" />
+ <title>numpy_array_simultaneous</title>
+ <link rel="stylesheet" href="/static/css/default.css" />
+ <style>
+  .article {
+    margin-left:10%;
+    margin-top:30px;
+  }
+  form {
+    margin-left:20%;
+    padding:16px;
+  }
+  .result {
+     font-size: 12pt;
+     color: darkcyan;
+  }
+ </style>
+</head>
+
+<body>
+  <h1>NumPy 連立一次方程式</h1>
+  <div class="menubar"><a href="/">HOME</a></div>
+  <div class="article">
+  <form method="POST" action="/numpy/array/simultaneous">
+   <div class="form_row"><label>係数+値行列 (JSON形式) </label><br /><textarea name="coefficients" cols="40" rows="4">{{ coef }}</textarea></div>
+   <div class="form_row"><input type="submit" value="計算" />
+  </form>
+  <br /><br />
+  <p>結果</p>
+  <div class="result">
+  {{ result | safe }}
+  </div>
+ </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+ <title>user.Users テーブル</title>
+ <style>
+  h1 {
+    text-align:center;
+    margin-top:30px;
+    color:blue;
+  }
+  form {
+    margin-left:10%;
+    padding:10px;
+  }
+  input[type="button"] {
+    border-radius: 6px 6px 6px 6px;
+    background-color: aquamarine;
+    height: 32px;
+    font-size:12pt;
+  }
+  table, th, td {
+    border:solid thin gray;
+  }
+  th {
+    background-color:gainsboro;
+  }
+ </style>
+</head>
+
+<body style="margin-left:5%;margin-right:5%;">
+ <h1>user.Users テーブル</h1>
+ <br />
+ <table style="width:90%">
+ <tr><th>ユーザID</th><th>パスワード</th><th>特権レベル</th><th>情報</th><th>登録日</th><th>期限切れ</th></tr>
+ {% for (id, userid, password, priv, info, registered, expired) in cursor %}
+   <tr><td>{{ id }}</td><td>{{ userid }}</td><td>{{ priv }}</td><td>{{ info }}</td><td>{{ registered }}</td><td>{{ expired }}</td></tr>
+ {% endfor %}
+ </table>
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+</body>
+</html>

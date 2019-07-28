@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+ <meta charset="utf-8" />
+ <title>numpy_array</title>
+ <link rel="stylesheet" href="/static/css/default.css" />
+ <style>
+  .article {
+    margin-left:10%;
+    margin-top:30px;
+  }
+  form {
+    margin-left:20%;
+    padding:16px;
+  }
+  .result {
+     font-size: 12pt;
+     color: darkcyan;
+  }
+ </style>
+</head>
+
+<body>
+  <h1>NumPy 配列</h1>
+  <div class="menubar"><a href="/">HOME</a></div>
+  <div class="article">
+  <form method="POST" action="/numpy/array">
+   <div class="form_row"><label>dtype: <select name="dtype">
+     <option>int32</option>
+     <option>int64</option>
+     <option>float32</option>
+     <option>float64</option>
+    </select></label>
+   </div>
+   <div class="form_row"><input type="submit" value="作成" />
+  </form>
+  <br />
+  <p>結果</p>
+  <div class="result">
+  {{ content | safe }}
+  </div>
+ </div>
+</body>
+</html>

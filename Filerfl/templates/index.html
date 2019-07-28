@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+<head>
+ <meta charset="utf-8" />
+ <title>Filer by flask</title>
+ <link rel="stylesheet" href="/static/css/default.css" />
+ <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+ <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+ <style>
+  .filelist {
+    margin-left:5%;
+    margin-right:5%;
+    font-size:10pt;
+    color:dimgray;
+  }
+ </style>
+</head>
+
+<body>
+ <h1><img src="static/img/python.png"> Filer by flask v{{version}}</h1>
+ <div id="app">
+ <div class="menubar">
+   <label><a href="#" v-on:click="home_click"><img src="/static/img/home.png" /> ホーム</a>&nbsp;:&nbsp;</label>
+   <label><a href="#" v-on:click="refresh_click"><img src="/static/img/refresh.png" /> 最新</a>&nbsp;:&nbsp;</label>
+   <label>よく使うフォルダ <select v-model="favloc" v-on:change="folder_changed">
+       <option v-for="fav in fav_folder" v-html="fav"></option>
+     </select></label>&nbsp;
+   <label>検索 <input type="text" v-model="find_text" /></label>&nbsp;
+   <input type="button" v-on:click="find_click" value="検索" />
+   &nbsp;:&nbsp;<a href="#" v-on:click="command_click" target="_blank"><img src="/static/img/command.png" /> 操作</a>&nbsp;:&nbsp;
+   <a href="/options" target="_blank"><img src="/static/img/option.png" /> オプション</a>
+ </div>
+ <p class="message"><a href="#" v-on:click="up_folder"><img src="/static/img/up_folder.png" alt="上のフォルダ" /></a>&nbsp;&nbsp;<span v-html="message"></span></p>
+ <br />
+ <div class="filelist">
+   <table v-html="filelist" style="width:90%;"></table>
+ </div>
+ </div>
+
+ <script>
+ var app = new Vue({
+    el :"#app",
+    window:onload = ()=>{
+      app.message = "Ready";
+    },
+    data: {  // ** データ **
+      fav_folder: {{ fav_folder | safe }},
+      favloc: "",
+      find_text: "",
+      message: "",
+      current: "",
+      home_folder: {{ home | safe }},
+      filelist: ""
+    },
+    methods: {  // ** メソッド **
+      find_click: ()=>{  // 「検索」メニュー
+        $.getJSON("/find", {"findstr":app.find_text, folder:app.current},
+          (data)=>{
+            app.draw_html(data);
+          });
+      },
+      home_click: ()=>{  // ホームフォルダ表示
+        orderby = localStorage.getItem("orderby") ? localStorage.getItem("orderby") : "";
+        hiddenfile = localStorage.getItem("hiddenfile");
+        $.getJSON("/list_files", {"folder":app.home_folder, "orderby":orderby, "hiddenfile":hiddenfile},
+          (data)=>{
+            app.current = app.home_folder;
+            app.message = app.currentlink(app.home_folder);
+            app.draw_html(data);
+          });
+      },
+      folder_changed: (e)=>{ // よく使うフォルダが変更されたとき
+        orderby = localStorage.getItem("orderby") ? localStorage.getItem("orderby") : "";
+        hiddenfile = localStorage.getItem("hiddenfile");
+        $.getJSON("/list_files", {"folder":app.favloc, "orderby":orderby, "hiddenfile":hiddenfile},
+          (data)=>{
+            app.message = app.currentlink(app.favloc);
+            app.current = app.favloc;
+            app.draw_html(data);
+          });
+      },
+      refresh_click: ()=>{  // 「最新」表示
+        orderby = localStorage.getItem("orderby") ? localStorage.getItem("orderby") : "";
+        hiddenfile = localStorage.getItem("hiddenfile");
+        $.getJSON("/list_files", {"folder":app.current, "orderby":orderby, "hiddenfile":hiddenfile},
+          (data)=>{
+            app.draw_html(data);
+            app.message = app.currentlink(app.current);
+          });
+      },
+      up_folder: ()=>{  // 上のフォルダへ移動
+        let newdir = "";
+        if (app.current == "/")
+          return;
+        let parts = app.current.split("/");
+        if (parts[0] == "" && parts.length == 2) {  // "/xxx" の場合
+          app.message = "/";
+          newdir = "/";
+        }
+        else {
+          parts.pop();
+          newdir = parts.join("/");
+          app.message = app.currentlink(newdir);
+        }
+        orderby = localStorage.getItem("orderby") ? localStorage.getItem("orderby") : "";
+        hiddenfile = localStorage.getItem("hiddenfile");
+        $.getJSON("/list_files", {"folder":newdir, "orderby":orderby, "hiddenfile":hiddenfile},
+          (data)=>{
+            app.current = newdir;
+            app.draw_html(data);
+          });
+      },
+      move_folder: (folder)=>{  // 指定したフォルダへ移動
+        orderby = localStorage.getItem("orderby") ? localStorage.getItem("orderby") : "";
+        hiddenfile = localStorage.getItem("hiddenfile");
+        $.getJSON("/list_files", {"folder":folder, "orderby":orderby, "hiddenfile":hiddenfile},
+          (data)=>{
+            app.current = folder;
+            app.message = app.currentlink(folder);
+            app.draw_html(data);
+          });
+      },
+      command_click: ()=>{  // 「操作」メニュークリック
+        $("input[type='checkbox']").each(()=>{
+          if ($(this).prop("id").indexOf("check") == 0){
+            if ($(this).prop("checked")) {
+              localstorage.setItem("checked_items", this.val() + ",")
+            }
+          }
+        });
+        $.getJSON("/command", ()=>{});
+      },
+      draw_html: (data)=>{  // HTMLを表示する。
+        let number = 1
+        let result = "<tr><th>select</th><th>mode</th><th>dir</th><th>owner</th><th>group</th><th>size</th><th>updated</th><th>name</th></tr>";
+        for (let row of data) {
+          result += "<tr><td style=\"text-align:center;\"><input id=\"check" + number + "\" type=\"checkbox\" value=\"" + row[row.length - 1] + "\" />" + number +"</th>";
+          number += 1
+          let j = 0;
+          for (let item of row) {
+            // dir フィールドからフォルダかどうかを判別。
+            let is_dir = (row[1] == 'D' || row[1] == 'DL') ? true : false;
+            let is_text = is_textview(row[row.length - 1]);
+            let is_image = is_imageview(row[row.length - 1]);
+            if (j == row.length - 1) {
+              // name フィールド
+              let target = app.current + "/" + item;
+              if (is_dir) {
+                result += "<td><a href=\"javascript:app.move_folder('" + target + "')\">" + item + "</a></td>";
+              }
+              else if (is_text) {  // テキスト表示
+                result += "<td><a href=\"http://localhost:5000/text_view?path=" + target + "\" target=\"_blank\">" + item + "</a></td>";
+              }
+              else if (is_image) {  // 画像表示
+                result += "<td><a href=\"http://localhost:5000/image_view?path=" + target + "\" target=\"_blank\">" + item + "</a></td>";
+              }
+              else {
+                result += "<td>" + item + "</td>";
+              }
+            }
+            else {
+              result += "<td>" + item + "</td>";
+            }
+            j++;
+          }
+          result += "</tr>";
+        }
+        app.filelist = result;
+      },
+      currentlink: (f)=>{  // リンク作成
+        let s = "";
+        let t = "";
+        fpart = f.split("/");
+        for (let fp of fpart) {
+          if (fp == "")
+            continue;
+          if (t == "") {
+            s += "/<a href=\"javascript:app.move_folder('/" + fp + "')\">" + fp + "</a>";
+          }
+          else {
+            s += "/<a href=\"javascript:app.move_folder('/" + t + "/" + fp + "')\">" + fp + "</a>";
+          }
+          if (t == "")
+            t = fp;
+          else
+            t += "/" + fp;
+        }
+        return s;
+      }
+     }
+  });
+
+  function is_textview(path) {  // テキスト表示可能か？
+       let parts = path.split(".");
+       let ext = "";
+       if (parts.length > 1) {
+         ext = parts[parts.length - 1];
+       }
+       exts = localStorage.getItem("textview");
+       return (exts.indexOf(ext) >= 0);
+     }
+     
+  function is_imageview(path) {  // 画像表示可能か？
+       let parts = path.split(".");
+       let ext = "";
+       if (parts.length > 1) {
+         ext = parts[parts.length - 1];
+       }
+       exts = "jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF";
+       return (exts.indexOf(ext) >= 0);
+     }
+
+ </script>
+ <p>&nbsp;</p>
+ <p style="text-align:center;"><a href="#top">TOP</a></p>
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+</body>
+</html>

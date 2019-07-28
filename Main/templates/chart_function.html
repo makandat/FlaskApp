@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- chart_function.html -->
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Chart.js function</title>
+  <link rel="stylesheet" href="/static/css/default.css" />
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+</head>
+
+<body>
+ <h1>Chart.js 関数のグラフ</h1>
+ <div class="menubar"><a href="/">HOME</a></div>
+ <br />
+ 
+<canvas id="myChart" width="200" height="200" style="margin-left:5%;"></canvas>
+<script>
+var ctx = "myChart"; // document.getElementById("myChart").getContext('2d');
+var options;
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [0,1,2,3,4,5],
+      datasets: [{
+         label: "A",
+         data: [0,2,4,8,16,32],
+         backgroundColor: "teal",
+         bordercolor: "black",
+         borderwidth: 1
+        }]
+    },
+    options: null
+});
+
+$(function() {
+  myChart.data.datasets.forEach((dataset) => { dataset.data.push([0,1,2,3,4,5]) });
+  myChart.options.title.text = 'Sample';
+  myChart.update();
+});
+</script>
+</body>
+</html>

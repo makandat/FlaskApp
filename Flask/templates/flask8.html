@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+ <meta charset="utf-8" />
+ <title>flask8</title>
+ <link rel="stylesheet" href="static/default.css" />
+ <script src="static/jquery.min.js"></script>
+ <script>
+var count = 0;
+$(function() {
+  $('#button1').click(function() {
+    count += 1;
+    $('#p1').text("Click " + count);
+  });
+});
+ </script>
+</head>
+
+<body>
+<h1>flask8</h1>
+<p class="message">静的要素のテスト</p>
+<div style="margin-left:10%;">
+ <img src="static/Python.gif" />
+ <br />
+ <br />
+ <input type="button" id="button1" value="Click" /><br />
+ <p class="message" id="p1"></p>
+</div>
+</body>
+</html>
+

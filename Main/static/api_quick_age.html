@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>api_quick_age</title>
+  <link rel="stylesheet" href="./css/default.css" />
+  <script src="./js/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+    .app {
+      margin-left:20%;
+      margin-right:5%;
+      padding: 16px;
+    }
+    .result {
+      margin-top:20px;
+      margin-bottom:100px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>年齢と誕生年</h1>
+  <div class="menubar"><a href="/">HOME</a></div>
+  <br />
+  <div class="app" id="app">
+    <div class="form_row"><label><input type="radio" name="convert" value="age" v-model="convert" checked /> 年齢から誕生年を表示</label>&nbsp;
+      <label><input type="radio" name="convert" value="born" v-model="convert" /> 誕生年から年齢を表示</label></div>
+    <div class="form_row"><label>年齢または誕生年 <input type="text" v-model="year" /></label></div>
+    <div class="form_row"><input type="button" value="取得する" v-on:click="get_click" /></div>
+    <br />
+    <p>年齢または誕生年の入力方法： 西暦は必ず4桁の数字で入力する。<br />
+      和暦は"T","S","H","R"を先頭にして2桁または1桁の数字を入力する。<br />
+      年齢は3桁以下の数字とする。(0歳〜100歳まで)</p>
+    <br />
+    <p class="message" v-text="result"></p>
+  </div>
+  <script>
+  var URL = "http://localhost:5000/api/quick_age";
+  var app = new Vue({
+    el: "#app",
+    data: {
+      convert: "age",
+      year: "",
+      result: ""
+    },
+    methods: {
+      get_click: function() {
+        console.log(app.convert);
+        console.log(app.year);
+        $.getJSON(
+          URL,
+          {"convert":app.convert, "year":app.year},
+          function(data) {
+            if (data.includes("エラー", 0)) {
+              app.result = data;
+            }
+            else if (app.convert == "age") {
+              let parts = data.split(',');
+              app.result = parts[0] + "年 (" + parts[1] + ")"
+            }
+            else {
+              app.result = data + "歳";
+            }
+          }
+        );
+      }
+    }
+  });
+  </script>
+</body>
+</html>

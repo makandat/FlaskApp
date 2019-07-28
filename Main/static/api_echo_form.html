@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>/api/echo/value</title>
+  <link rel="stylesheet" href="css/default.css" />
+  <script src="js/jquery.min.js"></script>
+  <script>
+  URL = "http://localhost:5000/api/echo/"
+  $(function() {
+    $("#submit").click(function() {
+      value = $("#value").val();
+      $.getJSON(URL + value, function(data) {
+        $("#message").text(data);
+      });
+    });
+    $("#clear").click(function() {
+      $("#value").val("");
+      $("#message").text("");
+    });
+  });
+  </script>
+</head>
+
+<body>
+  <h1>/api/echo/value のテスト</h1>
+  <div class="menubar"><a href="/">HOME</a></div>
+  <br />
+  <div style="margin-left:10%">
+    <div class="form_row"><label>value <input type="text" id="value" /></label></div>
+    <div class="form_row"><input type="button" id="submit" value="submit" />&nbsp;<input type="button" id="clear" value="clear" /></div>
+    <br />
+    <p id="message" class="message"></p>
+</body>
+</html>

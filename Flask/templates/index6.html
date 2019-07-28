@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+ <title>Ajax 加算</title>
+ <style>
+  h1 {
+    text-align:center;
+    margin-top:30px;
+    color:blue;
+  }
+  form {
+    margin-left:10%;
+    padding:10px;
+  }
+  input[type="button"] {
+    border-radius: 6px 6px 6px 6px;
+    background-color: aquamarine;
+    height: 32px;
+    font-size:12pt;
+  }
+
+ </style>
+ <script src="{{ url_for('static', filename='jquery.min.js') }}">
+ <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"> -->
+ </script>
+ <script>
+  $(document).ready(function() {
+    $('#add_button').click(function() {
+      var a = $('#a').val();
+      var b = $('#b').val();
+      $.getJSON('/add', {"a":a,"b":b}, function(data) {
+        $('#result').text(data['result']);
+      });
+    });
+  });
+ </script>
+</head>
+
+<body style="margin-left:5%;margin-right:5%;">
+ <h1>Ajax 加算</h1>
+ <form>
+  <div style="float:left"><label>a <input type="text" name="a" id="a" size="8" /></label></div>
+  <div><label>　b <input type="text" name="b" id="b" size="8" /></label></div>
+  <div>　　<input type="button" name="add_button" id="add_button" value=" ADD " /></label></div>
+ </form>
+ <br style="clear:both" />
+ <p style="margin-left:10%;">結果</p>
+ <p style="margin-left:10%;font-size:2em;color:blue;" id="result"></p>
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+</body>
+</html>

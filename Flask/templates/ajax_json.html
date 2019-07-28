@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+ <meta charset="utf-8" />
+ <title>ajax_json</title>
+ <style>
+ </style>
+ <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+ <script>
+  $(function() {
+    $('#calculate').click(function() {
+      $.getJSON(
+        'http://localhost/add_numbers',
+        {
+          "a": $('#a').val(),
+          "b": $('#b').val()
+        },
+        function(data) {
+          $("#result").text(data.result);
+        }
+      );
+    });
+  });
+ </script>
+</head>
+
+<body>
+<div style="margin-left:20%;">
+<h1>ajax_json</h1>
+<form>
+ <div><label>a <input type="text" id="a" /></label></div>
+ <div><label>b <input type="text" id="b" /></label></div>
+ <div><input type="button" id="calculate" value="submit" /></div>
+</form>
+<p id="result"></p>
+</div>
+</body>
+</html>
+

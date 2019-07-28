@@ -1,0 +1,5 @@
+2019-06-25 09:03:21,087 - flask.app - INFO - session start
+2019-06-25 09:03:27,713 - flask.app - INFO - log count = 1
+2019-06-25 09:03:28,323 - flask.app - INFO - log count = 2
+2019-06-25 09:03:32,403 - flask.app - INFO - log count = 3
+2019-06-25 09:03:33,260 - flask.app - INFO - log count = 4

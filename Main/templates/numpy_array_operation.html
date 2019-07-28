@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+ <meta charset="utf-8" />
+ <title>numpy_array_operation</title>
+ <link rel="stylesheet" href="/static/css/default.css" />
+ <style>
+  .article {
+    margin-left:10%;
+    margin-top:30px;
+  }
+  form {
+    margin-left:20%;
+    padding:16px;
+  }
+  .result {
+     font-size: 12pt;
+     color: darkcyan;
+  }
+  textarea {
+    vertical-align:top;
+  }
+ </style>
+</head>
+
+<body>
+  <h1>NumPy 配列の計算</h1>
+  <div class="menubar"><a href="/">HOME</a></div>
+  <div class="article">
+  <form method="POST" action="/numpy/array/operation">
+   <div class="form_row"><label>Array A: <textarea name="array_a" cols="20" rows="4">{{ array_a }}</textarea></label></div>
+   <div class="form_row"><label>Array B: <textarea name="array_b" cols="20" rows="4">{{ array_b }}</textarea></label></div>
+   <div class="form_row"><label>計算方法 <select name="calc">
+       <option value="add">足し算</option>
+       <option value="sub">引き算</option>
+       <option value="mul">掛け算</option>
+       <option value="div">割り算</option>
+       <option value="dot">行列の掛け算</option>
+      </select>
+   <div class="form_row"><input type="submit" value="計算" />
+  </form>
+  <p>データはJSON形式で入力する。</p>
+  <br />
+  <p>結果 ({{ kind }})</p>
+  <div class="result">
+  {{ result | safe }}
+  </div>
+ </div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>api_pictures_view</title>
+  <link rel="stylesheet" href="./css/default.css" />
+  <script src="./js/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+    .app {
+      margin-left:10%;
+      margin-right:5%;
+      padding: 16px;
+    }
+    .result {
+      margin-top:20px;
+      margin-bottom:100px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Pictures ビューの表示</h1>
+  <div class="menubar"><a href="/">HOME</a></div>
+  <div class="app" id="app">
+    <div><label>ビューの選択</label> <select v-model="select_views">
+      <option>VW_MANGA</option>
+      <option>VW_HCG</option>
+      <option>VW_PIXIV</option>
+    </select>
+    &nbsp;<span v-if="flag_shown">
+    <a href="#" v-on:click="move_first"><img src="./img/first.svg" /></a>&nbsp;
+    <a href="#" v-on:click="move_prev"><img src="./img/prev.svg" /></a>&nbsp;
+    <a href="#" v-on:click="move_next"><img src="./img/next.svg" /></a>&nbsp;
+    <a href="#" v-on:click="move_last"><img src="./img/last.svg" /></a>&nbsp;
+    </span>
+    &nbsp;<span v-if="flag_shown">(</span>&nbsp;<span v-text="page_count"></span> <span v-if="flag_shown">ページ )</span>
+    </div>
+    <div><label><input type="button" id="button_show" value=" SHOW " v-on:click="button_show_click" /></label></div>
+    <div class="result" v-html="to_html"></div>
+  </div>
+  <script>
+    var URL = "http://localhost:5000/api/pictures/";
+    var LIM = 100;
+    var app = new Vue({
+      el: "#app",
+      data: {
+        select_views: "",
+        page_head: 0,
+        flag_shown: false,
+        result: []
+      },
+      methods: {
+        button_show_click: function() {
+          if (this.select_views == "") {
+            alert("ビューを選択してください。");
+            return;
+          }
+          $.getJSON(URL + this.select_views, function(data) {
+            app.result = data;
+          });
+        },
+        move_first: function() {
+          this.page_head = 0;
+        },
+        move_prev: function() {
+          if (this.page_head > 0) {
+            this.page_head--;
+          }
+        },
+        move_next: function() {
+          if (this.page_head < Math.floor(this.result.length / LIM)) {
+            this.page_head++;
+          }
+        },
+        move_last: function() {
+          this.page_head = Math.floor(this.result.length / LIM);
+        }
+      },
+      computed: {
+        to_html: function() {
+          if (this.result[0] == undefined) {
+            return "";
+          }
+          var html = "<table>\n";
+          html += "<tr><th>id</th><th>タイトル</th><th>作者</th><th>パス</th><th>マーク</th><th>情報</th><th>FAV</th><th>COUNT</th><th>BINDATA</th></tr>\n";
+          for (let i = 0; i < LIM; i++) {
+            if (this.page_head * LIM + i >= this.result.length) {
+              break;
+            }
+            let ix = i + this.page_head * LIM;
+            let row = this.result[ix];
+            let hrow = "<tr>";
+            for (let j = 0; j < row.length; j++) {
+              let item = row[j];
+              hrow += "<td>" + item + "</td>";
+            };
+            hrow += "</tr>\n";
+            html += hrow;
+          };
+          html += "</table>\n";
+          this.flag_shown = true;
+          return html;
+        },
+        page_count: function() {
+          let scount = "";
+          if (this.result.length > 0) {
+            let npage = Math.floor(this.result.length / LIM);
+            scount = (this.page_head + 1) + "/" + (npage + 1);
+          }
+          return scount;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+  

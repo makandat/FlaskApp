@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+ <meta chaset="utf-8" />
+ <title>{{title}}</title>
+ <link rel="stylesheet" href="/static/css/default.css" />
+ <script src="/static/js/jquery.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+ <style>
+.article {
+  margin-left:15%;
+  margin-top:30px;
+ }
+ </style>
+</head>
+
+<body>
+ <h1>{{title}}</h1>
+ <div class="menubar"><a href="/">HOME</a></div>
+ <br />
+ <div class="article" id="app">
+  <div style="display:{{v_substr}}">
+    <div class="form_row"><label>置換前の文字列 <input type="text" v-model="oldstring" size="50" /></label></div>
+    <div class="form_row"><label>置換後の文字列 <input type="text" v-model="newstring1" size="50" /></label></div>
+    <div class="form_row" style="margin-left:15%;"><label><input type="button" v-on:click="replace_click" value="置換する"/></label></div>
+  </div>
+  <div style="display:{{v_id}}">
+    <div class="form_row"><label>置換する対象 (id) <input type="text" v-model="target_id" size="5" /></label></div>
+    <div class="form_row"><label>置換後の文字列 <input type="text" v-model="newstring2" size="50" /></label></div>
+    <div class="form_row" style="margin-left:15%;"><label><input type="button" v-on:click="targetid_click" value="置換する"/></label></div>
+  </div>
+  <br />
+  <div class="message" v-text="message"></div>
+ </div>
+ <script>
+  const URL1 = "http://localhost:5000/api/videos/modify/substr";
+  const URL2 = "http://localhost:5000/api/videos/modify/id";
+  var app = new Vue({
+    el: "#app",
+    data: {
+      oldstring: "",
+      newstring1: "",
+      newstring2: "",
+      target_id: 0,
+      message: ""
+    },
+    methods: {
+      replace_click: function() {
+        this.message = "";
+        $.getJSON(URL1, {"oldstring":this.oldstring, "newstring":this.newstring1},
+        function(data) {
+          app.message = data.result + " oldstring: " + app.oldstring;
+        });
+      },
+      targetid_click: function() {
+        if (this.target_id == 0) {
+          this.message = "id は正の整数でなければなりません。";
+          return;
+        }
+        this.message = "";
+        $.getJSON(URL2, {"id":this.target_id, "newstring":this.newstring2},
+          function(data) {
+            app.message = data.result + " id: " + app.target_id;    
+          });
+      }
+    },
+    watch: {
+      target_id: function(newstr, oldstr) {
+        if (newstr == "" || newstr == 0) {
+          this.message = "id が正しくありません。";
+        }
+        else {
+          this.message = "";
+        }
+      },
+      oldstring: function(newstr, oldstr) {
+        if (newstr == "") {
+          this.message = "置換元文字列が正しくありません。";
+        }
+        else {
+          this.message = "";
+        }
+      }
+    }
+  });
+ </script>
+ <p>&nbsp;</p>
+</body>
+</html>

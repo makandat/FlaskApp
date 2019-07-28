@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+ <title>セッション</title>
+ <style>
+  h1 {
+    text-align:center;
+    margin-top:30px;
+    color:blue;
+  }
+  form {
+    margin-left:10%;
+    padding:10px;
+  }
+  div.form_row {
+    padding:5px;
+    font-size:12pt;
+  }
+  p.message {
+    text-align:center;
+    font-size:12pt;
+    color:navy;
+  }
+  input[type="submit"] {
+    border-radius: 6px 6px 6px 6px;
+    background-color: aquamarine;
+    height: 32px;
+    font-size:12pt;
+  }
+ </style>
+</head>
+
+<body>
+ <h1>セッション</h1>
+ <hr />
+ <br />
+ <form method="POST">
+  <div class="form_row"><label>COUNT {{ count }}</label></div>
+  <div class="form_row"><input type="submit" value=" カウント " /></div>
+ </form>
+ <br />
+ <p class="message">{{ message }}</p>
+</body>
+</html>

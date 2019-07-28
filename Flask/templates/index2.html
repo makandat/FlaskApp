@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+ <title>{{ title }}</title>
+ <style>
+  h1 {
+    text-align:center;
+    margin-top:30px;
+    color:blue;
+  }
+  form {
+    margin-left:10%;
+    padding:10px;
+  }
+  div.form_row {
+    padding:5px;
+    font-size:12pt;
+  }
+  p.message {
+    text-align:center;
+    font-size:12pt;
+    color:navy;
+  }
+  input[type="submit"] {
+    border-radius: 6px 6px 6px 6px;
+    background-color: aquamarine;
+    height: 32px;
+    font-size:12pt;
+  }
+ </style>
+</head>
+
+<body>
+ <h1>{{ title }}</h1>
+ <hr />
+ <br />
+ <form method="POST">
+  <div class="form_row"><label>text1: <input type="text" name="text1" /></label></div>
+  <div class="form_row"><input type="checkbox" name="check1" checked="checked" value="C1" /> check1(C1)</div>
+  <div class="form_row">
+     <input type="radio" name="radio1" value="A" checked="checked" /> radio1(A)
+     <input type="radio" name="radio1" value="B" /> radio1(B)
+  </div>
+  <div class="form_row">
+    <select name="select1">
+      <option value="0">羽田</option>
+      <option value="1">成田</option>
+      <option value="2">関西</option>
+      <option value="3">札幌</option>
+      <option value="4">福岡</option>
+      <option value="5">中部</option>
+    </select>
+  </div>
+  <div class="form_row"><input type="submit" value=" 送信 " /></div>
+ </form>
+ <br />
+ <p class="message">{{ message }}</p>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Chart.js Line</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="/css/default.css" />
+</head>
+
+<body>
+<h1>Chart.js Line</h1>
+<div class="menubar"><a href="/">HOME</a></div>
+<br />
+<p id="message"></p>
+<div><input type="button" value="Test" id="button1" /></div>
+<br />
+<div style="width:50%;height:400px;margin-left:10%;">
+  <canvas id="chart1"></canvas>
+</div>
+<script>
+var ctx1 = "chart1"; //document.getElementById('myChart').getContext('2d');
+var chart1 = new Chart(ctx1, {
+  type: 'line',
+  data: {
+    labels: [0,1,2,3,4,5,6],
+    datasets: [{
+     label: ["red"],
+     data: [1, 2, 4, 8, 16, 32, 64],
+     backgroundColor: ["transparent"],
+     borderColor: ["red"],
+     borderWidth: 1
+   }]
+  },
+  options: {
+  }
+});
+</script>
+
+<script>
+$(function() {
+  $("#message").text("Ready");
+  $("#button1").click(function() {
+    $.getJSON("http://localhost:5000/api/numpy/function", {"kind":"sqrt", "xdata":"0,1,2,3,4,5,6"}, function(ydata) {
+      //chart1.data.datasets[0].data[1] = 50.122;
+      //chart1.data.datasets[0].data[3] = 60;
+
+      chart1.data.datasets[0].data = ydata.concat();
+/*
+      chart1.data.datasets[0].data[1] = ydata[1];
+      chart1.data.datasets[0].data[2] = ydata[2];
+      chart1.data.datasets[0].data[3] = ydata[3];
+*/
+      chart1.update();
+    });
+  });
+});
+</script>
+</body>
+</html>
